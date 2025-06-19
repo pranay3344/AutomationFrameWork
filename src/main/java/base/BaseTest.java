@@ -1,5 +1,6 @@
 package base;
 
+import base.utils.Contants;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
@@ -14,6 +15,7 @@ import org.testng.annotations.Parameters;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.time.Duration;
 
 public class BaseTest {
     public static WebDriver driver;
@@ -23,7 +25,7 @@ public class BaseTest {
 
     @BeforeTest
     public void beforeTestMethod(){
-sparkReporter = new ExtentSparkReporter(System.getProperty("user.dir"))+ File.separator+"reports"+File.separator+"report.html");
+sparkReporter = new ExtentSparkReporter(System.getProperty("user.dir")+ File.separator+"reports"+File.separator+"report.html");
 extent = new ExtentReports();
 extent.attachReporter(sparkReporter);
 sparkReporter.config().setTheme(Theme.DARK);
@@ -39,6 +41,11 @@ sparkReporter.config().setReportName("Automation Test Resuts");
     public void beforeMethodMethod(String browser, Method testMethod){
         logger = extent.createTest(testMethod.getName());
         setupDriver(browser);
+        driver.manage().window().maximize();
+        driver.get(Contants.url);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+
+
     }
     public void setupDriver(String browser){
 if(browser.equalsIgnoreCase("chrome")) {
